@@ -1,31 +1,29 @@
-import type { NextPage } from 'next';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import FormHelperText from '@mui/material/FormHelperText';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import FormHelperText from "@mui/material/FormHelperText";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { useFormik } from "formik";
+import type { NextPage } from "next";
+import * as Yup from "yup";
 
-import { RouterLink } from 'src/components/router-link';
-import { Seo } from 'src/components/seo';
-import type { AuthContextType } from 'src/contexts/auth/jwt';
-import { GuestGuard } from 'src/guards/guest-guard';
-import { IssuerGuard } from 'src/guards/issuer-guard';
-import { useAuth } from 'src/hooks/use-auth';
-import { useMounted } from 'src/hooks/use-mounted';
-import { usePageView } from 'src/hooks/use-page-view';
-import { useRouter } from 'src/hooks/use-router';
-import { useSearchParams } from 'src/hooks/use-search-params';
-import { Layout as AuthLayout } from 'src/layouts/auth/classic-layout';
-import { paths } from 'src/paths';
-import { AuthIssuer } from 'src/sections/auth/auth-issuer';
-import { Issuer } from 'src/utils/auth';
+import { RouterLink } from "src/components/router-link";
+import { Seo } from "src/components/seo";
+import type { AuthContextType } from "src/contexts/auth/jwt";
+import { GuestGuard } from "src/guards/guest-guard";
+import { IssuerGuard } from "src/guards/issuer-guard";
+import { useAuth } from "src/hooks/use-auth";
+import { useMounted } from "src/hooks/use-mounted";
+import { usePageView } from "src/hooks/use-page-view";
+import { useRouter } from "src/hooks/use-router";
+import { useSearchParams } from "src/hooks/use-search-params";
+import { Layout as AuthLayout } from "src/layouts/auth/classic-layout";
+import { paths } from "src/paths";
+import { Issuer } from "src/utils/auth";
 
 interface Values {
   email: string;
@@ -34,28 +32,24 @@ interface Values {
 }
 
 const initialValues: Values = {
-  email: 'demo@devias.io',
-  password: 'Password123!',
-  submit: null
+  email: "demo@devias.io",
+  password: "Password123!",
+  submit: null,
 };
 
 const validationSchema = Yup.object({
-  email: Yup
-    .string()
-    .email('Must be a valid email')
+  email: Yup.string()
+    .email("Must be a valid email")
     .max(255)
-    .required('Email is required'),
-  password: Yup
-    .string()
-    .max(255)
-    .required('Password is required')
+    .required("Email is required"),
+  password: Yup.string().max(255).required("Password is required"),
 });
 
 const Page: NextPage = () => {
   const isMounted = useMounted();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const returnTo = searchParams.get('returnTo');
+  const returnTo = searchParams.get("returnTo");
   const { issuer, signIn } = useAuth<AuthContextType>();
   const formik = useFormik({
     initialValues,
@@ -76,7 +70,7 @@ const Page: NextPage = () => {
           helpers.setSubmitting(false);
         }
       }
-    }
+    },
   });
 
   usePageView();
@@ -87,13 +81,9 @@ const Page: NextPage = () => {
       <div>
         <Card elevation={16}>
           <CardHeader
-            subheader={(
-              <Typography
-                color="text.secondary"
-                variant="body2"
-              >
-                Don&apos;t have an account?
-                &nbsp;
+            subheader={
+              <Typography color="text.secondary" variant="body2">
+                Don&apos;t have an account? &nbsp;
                 <Link
                   component={RouterLink}
                   href={paths.auth.jwt.register}
@@ -103,15 +93,12 @@ const Page: NextPage = () => {
                   Register
                 </Link>
               </Typography>
-            )}
+            }
             sx={{ pb: 0 }}
             title="Log in"
           />
           <CardContent>
-            <form
-              noValidate
-              onSubmit={formik.handleSubmit}
-            >
+            <form noValidate onSubmit={formik.handleSubmit}>
               <Stack spacing={3}>
                 <TextField
                   autoFocus
@@ -138,10 +125,7 @@ const Page: NextPage = () => {
                 />
               </Stack>
               {formik.errors.submit && (
-                <FormHelperText
-                  error
-                  sx={{ mt: 3 }}
-                >
+                <FormHelperText error sx={{ mt: 3 }}>
                   {formik.errors.submit as string}
                 </FormHelperText>
               )}
@@ -158,17 +142,6 @@ const Page: NextPage = () => {
             </form>
           </CardContent>
         </Card>
-        <Stack
-          spacing={3}
-          sx={{ mt: 3 }}
-        >
-          <Alert severity="error">
-            <div>
-              You can use <b>demo@devias.io</b> and password <b>Password123!</b>
-            </div>
-          </Alert>
-          <AuthIssuer issuer={issuer} />
-        </Stack>
       </div>
     </>
   );
@@ -177,9 +150,7 @@ const Page: NextPage = () => {
 Page.getLayout = (page) => (
   <IssuerGuard issuer={Issuer.JWT}>
     <GuestGuard>
-      <AuthLayout>
-        {page}
-      </AuthLayout>
+      <AuthLayout>{page}</AuthLayout>
     </GuestGuard>
   </IssuerGuard>
 );
