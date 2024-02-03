@@ -1,11 +1,9 @@
+import { Divider } from "@mui/material";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Stack from "@mui/material/Stack";
-import SvgIcon from "@mui/material/SvgIcon";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
-import PlusIcon from "@untitled-ui/icons-react/build/esm/Plus";
 import { addDays, subDays, subHours, subMinutes } from "date-fns";
 import type { NextPage } from "next";
 
@@ -24,6 +22,7 @@ import { OverviewPendingIssues } from "src/sections/dashboard/overview/overview-
 import { OverviewSubscriptionUsage } from "src/sections/dashboard/overview/overview-subscription-usage";
 import { OverviewTips } from "src/sections/dashboard/overview/overview-tips";
 import { OverviewTransactions } from "src/sections/dashboard/overview/overview-transactions";
+import LmsButton from "src/sections/dashboard/tile-buttons/lms-button";
 
 const now = new Date();
 
@@ -54,9 +53,10 @@ const Page: NextPage = () => {
             <Grid xs={12}>
               <Stack direction="row" justifyContent="space-between" spacing={4}>
                 <div>
-                  <Typography variant="h4">Overview</Typography>
+                  <Typography variant="h4">Dashboard</Typography>
                 </div>
                 <div>
+                  {/* 
                   <Stack direction="row" spacing={4}>
                     <Button
                       startIcon={
@@ -69,9 +69,28 @@ const Page: NextPage = () => {
                       New Dashboard
                     </Button>
                   </Stack>
+                  */}
                 </div>
               </Stack>
             </Grid>
+
+            <Grid xs={12} md={3}>
+              <LmsButton />
+            </Grid>
+            <Grid xs={12} md={3}>
+              <LmsButton />
+            </Grid>
+            <Grid xs={12} md={3}>
+              <LmsButton />
+            </Grid>
+            <Grid xs={12} md={3}>
+              <LmsButton />
+            </Grid>
+
+            <Grid xs={12}>
+              <Divider />
+            </Grid>
+
             <Grid xs={12} md={4}>
               <OverviewDoneTasks amount={31} />
             </Grid>
@@ -81,6 +100,7 @@ const Page: NextPage = () => {
             <Grid xs={12} md={4}>
               <OverviewOpenTickets amount={5} />
             </Grid>
+
             <Grid xs={12} md={7}>
               <OverviewBanner />
             </Grid>
