@@ -1,6 +1,6 @@
-import type { FC } from 'react';
-import Head from 'next/head';
-import PropTypes from 'prop-types';
+import Head from "next/head";
+import PropTypes from "prop-types";
+import type { FC } from "react";
 
 interface SeoProps {
   title?: string;
@@ -9,19 +9,15 @@ interface SeoProps {
 export const Seo: FC<SeoProps> = (props) => {
   const { title } = props;
 
-  const fullTitle = title
-    ? title + ' | Devias Kit PRO'
-    : 'Devias Kit PRO';
+  const fullTitle = title ? title + " | EduSphere" : "EduSphere";
 
   return (
     <Head>
-      <title>
-        {fullTitle}
-      </title>
+      <title>{fullTitle}</title>
     </Head>
   );
 };
 
 Seo.propTypes = {
-  title: PropTypes.string
+  title: PropTypes.string,
 };

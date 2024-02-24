@@ -1,32 +1,31 @@
-import type { NextPage } from 'next';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import Checkbox from '@mui/material/Checkbox';
-import FormHelperText from '@mui/material/FormHelperText';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Checkbox from "@mui/material/Checkbox";
+import FormHelperText from "@mui/material/FormHelperText";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import { useFormik } from "formik";
+import type { NextPage } from "next";
+import * as Yup from "yup";
 
-import { RouterLink } from 'src/components/router-link';
-import { Seo } from 'src/components/seo';
-import type { AuthContextType } from 'src/contexts/auth/jwt';
-import { GuestGuard } from 'src/guards/guest-guard';
-import { IssuerGuard } from 'src/guards/issuer-guard';
-import { useAuth } from 'src/hooks/use-auth';
-import { useMounted } from 'src/hooks/use-mounted';
-import { usePageView } from 'src/hooks/use-page-view';
-import { useRouter } from 'src/hooks/use-router';
-import { useSearchParams } from 'src/hooks/use-search-params';
-import { Layout as AuthLayout } from 'src/layouts/auth/classic-layout';
-import { paths } from 'src/paths';
-import { AuthIssuer } from 'src/sections/auth/auth-issuer';
-import { Issuer } from 'src/utils/auth';
+import { RouterLink } from "src/components/router-link";
+import { Seo } from "src/components/seo";
+import type { AuthContextType } from "src/contexts/auth/jwt";
+import { GuestGuard } from "src/guards/guest-guard";
+import { IssuerGuard } from "src/guards/issuer-guard";
+import { useAuth } from "src/hooks/use-auth";
+import { useMounted } from "src/hooks/use-mounted";
+import { usePageView } from "src/hooks/use-page-view";
+import { useRouter } from "src/hooks/use-router";
+import { useSearchParams } from "src/hooks/use-search-params";
+import { Layout as AuthLayout } from "src/layouts/auth/classic-layout";
+import { paths } from "src/paths";
+import { Issuer } from "src/utils/auth";
 
 interface Values {
   email: string;
@@ -37,38 +36,28 @@ interface Values {
 }
 
 const initialValues: Values = {
-  email: '',
-  name: '',
-  password: '',
+  email: "",
+  name: "",
+  password: "",
   policy: false,
-  submit: null
+  submit: null,
 };
 
 const validationSchema = Yup.object({
-  email: Yup
-    .string()
-    .email('Must be a valid email')
+  email: Yup.string()
+    .email("Must be a valid email")
     .max(255)
-    .required('Email is required'),
-  name: Yup
-    .string()
-    .max(255)
-    .required('Name is required'),
-  password: Yup
-    .string()
-    .min(7)
-    .max(255)
-    .required('Password is required'),
-  policy: Yup
-    .boolean()
-    .oneOf([true], 'This field must be checked')
+    .required("Email is required"),
+  name: Yup.string().max(255).required("Name is required"),
+  password: Yup.string().min(7).max(255).required("Password is required"),
+  policy: Yup.boolean().oneOf([true], "This field must be checked"),
 });
 
 const Page: NextPage = () => {
   const isMounted = useMounted();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const returnTo = searchParams.get('returnTo');
+  const returnTo = searchParams.get("returnTo");
   const { issuer, signUp } = useAuth<AuthContextType>();
   const formik = useFormik({
     initialValues,
@@ -89,42 +78,35 @@ const Page: NextPage = () => {
           helpers.setSubmitting(false);
         }
       }
-    }
+    },
   });
 
   usePageView();
 
   return (
     <>
-      <Seo title="Register" />
+      <Seo title="Registrieren" />
       <div>
         <Card elevation={16}>
           <CardHeader
-            subheader={(
-              <Typography
-                color="text.secondary"
-                variant="body2"
-              >
-                Already have an account?
-                &nbsp;
+            subheader={
+              <Typography color="text.secondary" variant="body2">
+                Sie haben bereits einen Account? &nbsp;
                 <Link
                   component={RouterLink}
                   href={paths.auth.jwt.login}
                   underline="hover"
                   variant="subtitle2"
                 >
-                  Log in
+                  Login
                 </Link>
               </Typography>
-            )}
+            }
             sx={{ pb: 0 }}
             title="Register"
           />
           <CardContent>
-            <form
-              noValidate
-              onSubmit={formik.handleSubmit}
-            >
+            <form noValidate onSubmit={formik.handleSubmit}>
               <Stack spacing={3}>
                 <TextField
                   error={!!(formik.touched.name && formik.errors.name)}
@@ -161,10 +143,10 @@ const Page: NextPage = () => {
               </Stack>
               <Box
                 sx={{
-                  alignItems: 'center',
-                  display: 'flex',
+                  alignItems: "center",
+                  display: "flex",
                   ml: -1,
-                  mt: 1
+                  mt: 1,
                 }}
               >
                 <Checkbox
@@ -172,30 +154,19 @@ const Page: NextPage = () => {
                   name="policy"
                   onChange={formik.handleChange}
                 />
-                <Typography
-                  color="text.secondary"
-                  variant="body2"
-                >
-                  I have read the
-                  {' '}
-                  <Link
-                    component="a"
-                    href="#"
-                  >
-                    Terms and Conditions
-                  </Link>
+                <Typography color="text.secondary" variant="body2">
+                  Ich habe die{" "}
+                  <Link component="a" href="#">
+                    Bedingungen und Datenschutzrichtlinien
+                  </Link>{" "}
+                  gelesen und akzeptiere sie
                 </Typography>
               </Box>
               {!!(formik.touched.policy && formik.errors.policy) && (
-                <FormHelperText error>
-                  {formik.errors.policy}
-                </FormHelperText>
+                <FormHelperText error>{formik.errors.policy}</FormHelperText>
               )}
               {formik.errors.submit && (
-                <FormHelperText
-                  error
-                  sx={{ mt: 3 }}
-                >
+                <FormHelperText error sx={{ mt: 3 }}>
                   {formik.errors.submit as string}
                 </FormHelperText>
               )}
@@ -207,14 +178,11 @@ const Page: NextPage = () => {
                 type="submit"
                 variant="contained"
               >
-                Register
+                Registrieren
               </Button>
             </form>
           </CardContent>
         </Card>
-        <Box sx={{ mt: 3 }}>
-          <AuthIssuer issuer={issuer} />
-        </Box>
       </div>
     </>
   );
@@ -223,9 +191,7 @@ const Page: NextPage = () => {
 Page.getLayout = (page) => (
   <IssuerGuard issuer={Issuer.JWT}>
     <GuestGuard>
-      <AuthLayout>
-        {page}
-      </AuthLayout>
+      <AuthLayout>{page}</AuthLayout>
     </GuestGuard>
   </IssuerGuard>
 );

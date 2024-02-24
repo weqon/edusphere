@@ -32,7 +32,7 @@ interface Values {
 }
 
 const initialValues: Values = {
-  email: "demo@devias.io",
+  email: "demo@weqon.net",
   password: "Password123!",
   submit: null,
 };
@@ -83,14 +83,14 @@ const Page: NextPage = () => {
           <CardHeader
             subheader={
               <Typography color="text.secondary" variant="body2">
-                Don&apos;t have an account? &nbsp;
+                Sie haben noch keinen Account?&nbsp;
                 <Link
                   component={RouterLink}
                   href={paths.auth.jwt.register}
                   underline="hover"
                   variant="subtitle2"
                 >
-                  Register
+                  Registrieren
                 </Link>
               </Typography>
             }
@@ -105,7 +105,7 @@ const Page: NextPage = () => {
                   error={!!(formik.touched.email && formik.errors.email)}
                   fullWidth
                   helperText={formik.touched.email && formik.errors.email}
-                  label="Email Address"
+                  label="Email"
                   name="email"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
@@ -137,7 +137,7 @@ const Page: NextPage = () => {
                 type="submit"
                 variant="contained"
               >
-                Log In
+                Login
               </Button>
             </form>
           </CardContent>

@@ -22,42 +22,22 @@ interface Section {
 
 const sections: Section[] = [
   {
-    title: "Menu",
+    title: "Links",
     items: [
       {
-        title: "Documentation",
+        title: "Impressum",
         external: true,
-        path: paths.docs,
-      },
-    ],
-  },
-  {
-    title: "Legal",
-    items: [
-      {
-        title: "Terms & Conditions",
-        path: "#",
+        path: "https://weqon.net/impressum",
       },
       {
-        title: "License",
-        path: "#",
+        title: "Datenschutz",
+        external: true,
+        path: "https://weqon.net/datenschutz",
       },
       {
-        title: "Contact",
-        path: "#",
-      },
-    ],
-  },
-  {
-    title: "Social",
-    items: [
-      {
-        title: "Instagram",
-        path: "#",
-      },
-      {
-        title: "LinkedIn",
-        path: "#",
+        title: "Kontakt",
+        external: true,
+        path: "https://weqon.net/kontakt",
       },
     ],
   },
@@ -124,11 +104,11 @@ export const Footer: FC = (props) => (
                   },
                 }}
               >
-                Devias Kit <span>PRO</span>
+                <span>Edu</span>Sphere
               </Box>
             </Stack>
             <Typography color="text.secondary" variant="caption">
-              © 2022 Devias IO
+              © 2024 WeQon
             </Typography>
           </Stack>
         </Grid>

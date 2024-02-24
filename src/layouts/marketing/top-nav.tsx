@@ -17,7 +17,6 @@ import { usePathname } from "src/hooks/use-pathname";
 import { useWindowScroll } from "src/hooks/use-window-scroll";
 import { paths } from "src/paths";
 
-import { PagesPopover } from "./pages-popover";
 import { TopNavItem } from "./top-nav-item";
 
 interface Item {
@@ -29,14 +28,13 @@ interface Item {
 }
 
 const items: Item[] = [
-  {
+  /*{
     title: "Pages",
-    popover: <PagesPopover />,
-  },
+    popover: <PagesPopover />, // Popover Beispiel
+  },*/
   {
-    title: "Docs",
-    path: paths.docs,
-    external: true,
+    title: "Zum Dashboard",
+    path: paths.dashboard.index,
   },
 ];
 
@@ -137,7 +135,7 @@ export const TopNav: FC<TopNavProps> = (props) => {
                     },
                   }}
                 >
-                  Edusphere
+                  <span>Edu</span>Sphere
                 </Box>
               )}
             </Stack>
