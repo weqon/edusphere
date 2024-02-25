@@ -5,7 +5,7 @@
     "@next/next/no-page-custom-font": "off",
     "jsx-a11y/alt-text": "off",
     "react/jsx-max-props-per-line": [
-      "error",
+      "warn",
       {
         "maximum": 1
       }
