@@ -22,7 +22,6 @@ import { OverviewPendingIssues } from "src/sections/dashboard/overview/overview-
 import { OverviewSubscriptionUsage } from "src/sections/dashboard/overview/overview-subscription-usage";
 import { OverviewTips } from "src/sections/dashboard/overview/overview-tips";
 import { OverviewTransactions } from "src/sections/dashboard/overview/overview-transactions";
-import LmsButton from "src/sections/dashboard/tile-buttons/lms-button";
 
 const now = new Date();
 
@@ -72,19 +71,6 @@ const Page: NextPage = () => {
                   */}
                 </div>
               </Stack>
-            </Grid>
-
-            <Grid xs={12} md={3}>
-              <LmsButton />
-            </Grid>
-            <Grid xs={12} md={3}>
-              <LmsButton />
-            </Grid>
-            <Grid xs={12} md={3}>
-              <LmsButton />
-            </Grid>
-            <Grid xs={12} md={3}>
-              <LmsButton />
             </Grid>
 
             <Grid xs={12}>

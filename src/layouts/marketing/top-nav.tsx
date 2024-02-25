@@ -28,14 +28,15 @@ interface Item {
 }
 
 const items: Item[] = [
+  // Hier Items einfügen für Navigation auf Landing Page
   /*{
     title: "Pages",
     popover: <PagesPopover />, // Popover Beispiel
   },*/
-  {
+  /* {
     title: "Zum Dashboard",
     path: paths.dashboard.index,
-  },
+  },*/
 ];
 
 const TOP_NAV_HEIGHT = 64;

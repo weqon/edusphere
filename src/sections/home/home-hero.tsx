@@ -14,7 +14,7 @@ export const HomeHero: FC = () => {
         backgroundPosition: "top center",
         backgroundImage: 'url("/assets/gradient-bg.svg")',
         pt: "120px",
-        pb: "120px",
+        pb: "80px",
       }}
     >
       <Container maxWidth="lg">
