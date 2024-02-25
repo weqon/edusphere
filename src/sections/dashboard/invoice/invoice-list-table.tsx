@@ -1,27 +1,26 @@
-import type { ChangeEvent, FC, MouseEvent } from 'react';
-import { format } from 'date-fns';
-import numeral from 'numeral';
-import PropTypes from 'prop-types';
-import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
-import Avatar from '@mui/material/Avatar';
-import Card from '@mui/material/Card';
-import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
-import SvgIcon from '@mui/material/SvgIcon';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
+import Avatar from "@mui/material/Avatar";
+import Card from "@mui/material/Card";
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import SvgIcon from "@mui/material/SvgIcon";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import ArrowRightIcon from "@untitled-ui/icons-react/build/esm/ArrowRight";
+import { format } from "date-fns";
+import numeral from "numeral";
+import PropTypes from "prop-types";
+import type { ChangeEvent, FC, MouseEvent } from "react";
 
-import { RouterLink } from 'src/components/router-link';
-import { Scrollbar } from 'src/components/scrollbar';
-import type { SeverityPillColor } from 'src/components/severity-pill';
-import { SeverityPill } from 'src/components/severity-pill';
-import { paths } from 'src/paths';
-import type { Invoice, InvoiceStatus } from 'src/types/invoice';
-import { getInitials } from 'src/utils/get-initials';
+import { RouterLink } from "src/components/router-link";
+import { Scrollbar } from "src/components/scrollbar";
+import type { SeverityPillColor } from "src/components/severity-pill";
+import { SeverityPill } from "src/components/severity-pill";
+import type { Invoice, InvoiceStatus } from "src/types/invoice";
+import { getInitials } from "src/utils/get-initials";
 
 type GroupedInvoices = {
   [key in InvoiceStatus]: Invoice[];
@@ -34,21 +33,21 @@ const groupInvoices = (invoices: Invoice[]): GroupedInvoices => {
 
       return {
         ...acc,
-        [status]: [...acc[status], invoice]
+        [status]: [...acc[status], invoice],
       };
     },
     {
       canceled: [],
       paid: [],
-      pending: []
+      pending: [],
     }
   );
 };
 
 const statusColorsMap: Record<InvoiceStatus, SeverityPillColor> = {
-  canceled: 'error',
-  paid: 'success',
-  pending: 'warning'
+  canceled: "error",
+  paid: "success",
+  pending: "warning",
 };
 
 interface InvoiceRowProps {
@@ -59,13 +58,14 @@ const InvoiceRow: FC<InvoiceRowProps> = (props) => {
   const { invoice, ...other } = props;
 
   const statusColor = statusColorsMap[invoice.status];
-  const totalAmount = numeral(invoice.totalAmount).format('0,0.00');
-  const issueDate = invoice.issueDate && format(invoice.issueDate, 'dd/MM/yyyy');
-  const dueDate = invoice.dueDate && format(invoice.dueDate, 'dd/MM/yyyy');
+  const totalAmount = numeral(invoice.totalAmount).format("0,0.00");
+  const issueDate =
+    invoice.issueDate && format(invoice.issueDate, "dd/MM/yyyy");
+  const dueDate = invoice.dueDate && format(invoice.dueDate, "dd/MM/yyyy");
 
   return (
     <TableRow
-      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
       {...other}
     >
       <TableCell width="25%">
@@ -74,32 +74,26 @@ const InvoiceRow: FC<InvoiceRowProps> = (props) => {
           direction="row"
           spacing={2}
           component={RouterLink}
-          href={paths.dashboard.invoices.details}
+          href={"#"}
           sx={{
-            display: 'inline-flex',
-            textDecoration: 'none',
-            whiteSpace: 'nowrap'
+            display: "inline-flex",
+            textDecoration: "none",
+            whiteSpace: "nowrap",
           }}
         >
           <Avatar
             sx={{
               height: 42,
-              width: 42
+              width: 42,
             }}
           >
             {getInitials(invoice.customer.name)}
           </Avatar>
           <div>
-            <Typography
-              color="text.primary"
-              variant="subtitle2"
-            >
+            <Typography color="text.primary" variant="subtitle2">
               {invoice.number}
             </Typography>
-            <Typography
-              color="text.secondary"
-              variant="body2"
-            >
+            <Typography color="text.secondary" variant="body2">
               {invoice.customer.name}
             </Typography>
           </div>
@@ -112,37 +106,22 @@ const InvoiceRow: FC<InvoiceRowProps> = (props) => {
         </Typography>
       </TableCell>
       <TableCell>
-        <Typography variant="subtitle2">
-          Issued
-        </Typography>
-        <Typography
-          color="text.secondary"
-          variant="body2"
-        >
+        <Typography variant="subtitle2">Issued</Typography>
+        <Typography color="text.secondary" variant="body2">
           {issueDate}
         </Typography>
       </TableCell>
       <TableCell>
-        <Typography variant="subtitle2">
-          Due
-        </Typography>
-        <Typography
-          color="text.secondary"
-          variant="body2"
-        >
+        <Typography variant="subtitle2">Due</Typography>
+        <Typography color="text.secondary" variant="body2">
           {dueDate}
         </Typography>
       </TableCell>
       <TableCell align="right">
-        <SeverityPill color={statusColor}>
-          {invoice.status}
-        </SeverityPill>
+        <SeverityPill color={statusColor}>{invoice.status}</SeverityPill>
       </TableCell>
       <TableCell align="right">
-        <IconButton
-          component={RouterLink}
-          href={paths.dashboard.invoices.details}
-        >
+        <IconButton component={RouterLink} href={"#"}>
           <SvgIcon>
             <ArrowRightIcon />
           </SvgIcon>
@@ -154,14 +133,17 @@ const InvoiceRow: FC<InvoiceRowProps> = (props) => {
 
 InvoiceRow.propTypes = {
   // @ts-ignore
-  invoice: PropTypes.object.isRequired
+  invoice: PropTypes.object.isRequired,
 };
 
 interface InvoiceListTableProps {
   count?: number;
   group?: boolean;
   items?: Invoice[];
-  onPageChange?: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+  onPageChange?: (
+    event: MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => void;
   onRowsPerPageChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   page?: number;
   rowsPerPage?: number;
@@ -175,7 +157,7 @@ export const InvoiceListTable: FC<InvoiceListTableProps> = (props) => {
     onPageChange = () => {},
     onRowsPerPageChange,
     page = 0,
-    rowsPerPage = 0
+    rowsPerPage = 0,
   } = props;
 
   let content: JSX.Element;
@@ -193,17 +175,9 @@ export const InvoiceListTable: FC<InvoiceListTableProps> = (props) => {
           const hasInvoices = invoices.length > 0;
 
           return (
-            <Stack
-              key={groupTitle}
-              spacing={2}
-            >
-              <Typography
-                color="text.secondary"
-                variant="h6"
-              >
-                {groupTitle}
-                {' '}
-                ({count})
+            <Stack key={groupTitle} spacing={2}>
+              <Typography color="text.secondary" variant="h6">
+                {groupTitle} ({count})
               </Typography>
               {hasInvoices && (
                 <Card>
@@ -211,10 +185,7 @@ export const InvoiceListTable: FC<InvoiceListTableProps> = (props) => {
                     <Table sx={{ minWidth: 600 }}>
                       <TableBody>
                         {invoices.map((invoice) => (
-                          <InvoiceRow
-                            key={invoice.id}
-                            invoice={invoice}
-                          />
+                          <InvoiceRow key={invoice.id} invoice={invoice} />
                         ))}
                       </TableBody>
                     </Table>
@@ -232,10 +203,7 @@ export const InvoiceListTable: FC<InvoiceListTableProps> = (props) => {
         <Table>
           <TableBody>
             {items.map((invoice) => (
-              <InvoiceRow
-                key={invoice.id}
-                invoice={invoice}
-              />
+              <InvoiceRow key={invoice.id} invoice={invoice} />
             ))}
           </TableBody>
         </Table>
@@ -266,5 +234,5 @@ InvoiceListTable.propTypes = {
   onPageChange: PropTypes.func,
   onRowsPerPageChange: PropTypes.func,
   page: PropTypes.number,
-  rowsPerPage: PropTypes.number
+  rowsPerPage: PropTypes.number,
 };

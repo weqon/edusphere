@@ -1,20 +1,19 @@
-import type { FC } from 'react';
-import PropTypes from 'prop-types';
-import { format } from 'date-fns';
-import type { SxProps } from '@mui/system/styleFunctionSx';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Chip from '@mui/material/Chip';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Chip from "@mui/material/Chip";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import type { SxProps } from "@mui/system/styleFunctionSx";
+import { format } from "date-fns";
+import PropTypes from "prop-types";
+import type { FC } from "react";
 
-import { RouterLink } from 'src/components/router-link';
-import { paths } from 'src/paths';
-import { getInitials } from 'src/utils/get-initials';
+import { RouterLink } from "src/components/router-link";
+import { getInitials } from "src/utils/get-initials";
 
 interface PostCardProps {
   authorAvatar: string;
@@ -41,13 +40,13 @@ export const PostCard: FC<PostCardProps> = (props) => {
     ...other
   } = props;
 
-  const formattedPublishedAt = format(publishedAt, 'MMM d, yyyy');
+  const formattedPublishedAt = format(publishedAt, "MMM d, yyyy");
 
   return (
     <Card {...other}>
       <CardMedia
         component={RouterLink}
-        href={paths.dashboard.blog.postDetails}
+        href={"#"}
         image={cover}
         sx={{ height: 280 }}
       />
@@ -58,7 +57,7 @@ export const PostCard: FC<PostCardProps> = (props) => {
         <Link
           color="text.primary"
           component={RouterLink}
-          href={paths.dashboard.blog.postDetails}
+          href={"#"}
           variant="h5"
         >
           {title}
@@ -68,10 +67,10 @@ export const PostCard: FC<PostCardProps> = (props) => {
           sx={{
             height: 48,
             mt: 1,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            WebkitBoxOrient: 'vertical',
-            WebkitLineClamp: 2
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 2,
           }}
           variant="body1"
         >
@@ -84,22 +83,10 @@ export const PostCard: FC<PostCardProps> = (props) => {
           spacing={2}
           sx={{ mt: 2 }}
         >
-          <Stack
-            alignItems="center"
-            direction="row"
-            spacing={2}
-          >
-            <Avatar src={authorAvatar}>
-              {getInitials(authorName)}
-            </Avatar>
+          <Stack alignItems="center" direction="row" spacing={2}>
+            <Avatar src={authorAvatar}>{getInitials(authorName)}</Avatar>
             <Typography variant="subtitle2">
-              By
-              {' '}
-              {authorName}
-              {' '}
-              •
-              {' '}
-              {formattedPublishedAt}
+              By {authorName} • {formattedPublishedAt}
             </Typography>
           </Stack>
           <Typography
@@ -124,5 +111,5 @@ PostCard.propTypes = {
   publishedAt: PropTypes.number.isRequired,
   readTime: PropTypes.string.isRequired,
   shortDescription: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired,
 };

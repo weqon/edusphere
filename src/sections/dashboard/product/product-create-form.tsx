@@ -1,26 +1,25 @@
-import type { FC } from 'react';
-import { useCallback, useState } from 'react';
-import toast from 'react-hot-toast';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormHelperText from '@mui/material/FormHelperText';
-import Grid from '@mui/material/Unstable_Grid2';
-import MenuItem from '@mui/material/MenuItem';
-import Stack from '@mui/material/Stack';
-import Switch from '@mui/material/Switch';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormHelperText from "@mui/material/FormHelperText";
+import MenuItem from "@mui/material/MenuItem";
+import Stack from "@mui/material/Stack";
+import Switch from "@mui/material/Switch";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Unstable_Grid2";
+import { useFormik } from "formik";
+import type { FC } from "react";
+import { useCallback, useState } from "react";
+import toast from "react-hot-toast";
+import * as Yup from "yup";
 
-import type { File } from 'src/components/file-dropzone';
-import { FileDropzone } from 'src/components/file-dropzone';
-import { QuillEditor } from 'src/components/quill-editor';
-import { useRouter } from 'src/hooks/use-router';
-import { paths } from 'src/paths';
+import type { File } from "src/components/file-dropzone";
+import { FileDropzone } from "src/components/file-dropzone";
+import { QuillEditor } from "src/components/quill-editor";
+import { useRouter } from "src/hooks/use-router";
 
 interface CategoryOption {
   label: string;
@@ -29,29 +28,29 @@ interface CategoryOption {
 
 const categoryOptions: CategoryOption[] = [
   {
-    label: 'Healthcare',
-    value: 'healthcare'
+    label: "Healthcare",
+    value: "healthcare",
   },
   {
-    label: 'Makeup',
-    value: 'makeup'
+    label: "Makeup",
+    value: "makeup",
   },
   {
-    label: 'Dress',
-    value: 'dress'
+    label: "Dress",
+    value: "dress",
   },
   {
-    label: 'Skincare',
-    value: 'skincare'
+    label: "Skincare",
+    value: "skincare",
   },
   {
-    label: 'Jewelry',
-    value: 'jewelry'
+    label: "Jewelry",
+    value: "jewelry",
   },
   {
-    label: 'Blouse',
-    value: 'blouse'
-  }
+    label: "Blouse",
+    value: "blouse",
+  },
 ];
 
 interface Values {
@@ -67,15 +66,15 @@ interface Values {
 }
 
 const initialValues: Values = {
-  barcode: '925487986526',
-  category: '',
-  description: '',
+  barcode: "925487986526",
+  category: "",
+  description: "",
   images: [],
-  name: '',
+  name: "",
   newPrice: 0,
   oldPrice: 0,
-  sku: 'IYV-8745',
-  submit: null
+  sku: "IYV-8745",
+  submit: null,
 };
 
 const validationSchema = Yup.object({
@@ -86,7 +85,7 @@ const validationSchema = Yup.object({
   name: Yup.string().max(255).required(),
   newPrice: Yup.number().min(0).required(),
   oldPrice: Yup.number().min(0),
-  sku: Yup.string().max(255)
+  sku: Yup.string().max(255),
 });
 
 export const ProductCreateForm: FC = (props) => {
@@ -98,67 +97,44 @@ export const ProductCreateForm: FC = (props) => {
     onSubmit: async (values, helpers): Promise<void> => {
       try {
         // NOTE: Make API request
-        toast.success('Product created');
-        router.push(paths.dashboard.products.index);
+        toast.success("Product created");
+        router.push("#");
       } catch (err) {
         console.error(err);
-        toast.error('Something went wrong!');
+        toast.error("Something went wrong!");
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
       }
-    }
+    },
   });
 
-  const handleFilesDrop = useCallback(
-    (newFiles: File[]): void => {
-      setFiles((prevFiles) => {
-        return [...prevFiles, ...newFiles];
-      });
-    },
-    []
-  );
+  const handleFilesDrop = useCallback((newFiles: File[]): void => {
+    setFiles((prevFiles) => {
+      return [...prevFiles, ...newFiles];
+    });
+  }, []);
 
-  const handleFileRemove = useCallback(
-    (file: File): void => {
-      setFiles((prevFiles) => {
-        return prevFiles.filter((_file) => _file.path !== file.path);
-      });
-    },
-    []
-  );
+  const handleFileRemove = useCallback((file: File): void => {
+    setFiles((prevFiles) => {
+      return prevFiles.filter((_file) => _file.path !== file.path);
+    });
+  }, []);
 
-  const handleFilesRemoveAll = useCallback(
-    (): void => {
-      setFiles([]);
-    },
-    []
-  );
+  const handleFilesRemoveAll = useCallback((): void => {
+    setFiles([]);
+  }, []);
 
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      {...props}
-    >
+    <form onSubmit={formik.handleSubmit} {...props}>
       <Stack spacing={4}>
         <Card>
           <CardContent>
-            <Grid
-              container
-              spacing={3}
-            >
-              <Grid
-                xs={12}
-                md={4}
-              >
-                <Typography variant="h6">
-                  Basic details
-                </Typography>
+            <Grid container spacing={3}>
+              <Grid xs={12} md={4}>
+                <Typography variant="h6">Basic details</Typography>
               </Grid>
-              <Grid
-                xs={12}
-                md={8}
-              >
+              <Grid xs={12} md={8}>
                 <Stack spacing={3}>
                   <TextField
                     error={!!(formik.touched.name && formik.errors.name)}
@@ -180,13 +156,15 @@ export const ProductCreateForm: FC = (props) => {
                     </Typography>
                     <QuillEditor
                       onChange={(value: string): void => {
-                        formik.setFieldValue('description', value);
+                        formik.setFieldValue("description", value);
                       }}
                       placeholder="Write something"
                       sx={{ height: 400 }}
                       value={formik.values.description}
                     />
-                    {!!(formik.touched.description && formik.errors.description) && (
+                    {!!(
+                      formik.touched.description && formik.errors.description
+                    ) && (
                       <Box sx={{ mt: 2 }}>
                         <FormHelperText error>
                           {formik.errors.description}
@@ -201,32 +179,18 @@ export const ProductCreateForm: FC = (props) => {
         </Card>
         <Card>
           <CardContent>
-            <Grid
-              container
-              spacing={3}
-            >
-              <Grid
-                xs={12}
-                md={4}
-              >
+            <Grid container spacing={3}>
+              <Grid xs={12} md={4}>
                 <Stack spacing={1}>
-                  <Typography variant="h6">
-                    Images
-                  </Typography>
-                  <Typography
-                    color="text.secondary"
-                    variant="body2"
-                  >
+                  <Typography variant="h6">Images</Typography>
+                  <Typography color="text.secondary" variant="body2">
                     Images will appear in the store front of your website.
                   </Typography>
                 </Stack>
               </Grid>
-              <Grid
-                xs={12}
-                md={8}
-              >
+              <Grid xs={12} md={8}>
                 <FileDropzone
-                  accept={{ 'image/*': [] }}
+                  accept={{ "image/*": [] }}
                   caption="(SVG, JPG, PNG, or gif maximum 900x400)"
                   files={files}
                   onDrop={handleFilesDrop}
@@ -239,25 +203,16 @@ export const ProductCreateForm: FC = (props) => {
         </Card>
         <Card>
           <CardContent>
-            <Grid
-              container
-              spacing={3}
-            >
-              <Grid
-                xs={12}
-                md={4}
-              >
-                <Typography variant="h6">
-                  Pricing
-                </Typography>
+            <Grid container spacing={3}>
+              <Grid xs={12} md={4}>
+                <Typography variant="h6">Pricing</Typography>
               </Grid>
-              <Grid
-                xs={12}
-                md={8}
-              >
+              <Grid xs={12} md={8}>
                 <Stack spacing={3}>
                   <TextField
-                    error={!!(formik.touched.oldPrice && formik.errors.oldPrice)}
+                    error={
+                      !!(formik.touched.oldPrice && formik.errors.oldPrice)
+                    }
                     fullWidth
                     label="Old price"
                     name="oldPrice"
@@ -267,7 +222,9 @@ export const ProductCreateForm: FC = (props) => {
                     value={formik.values.oldPrice}
                   />
                   <TextField
-                    error={!!(formik.touched.newPrice && formik.errors.newPrice)}
+                    error={
+                      !!(formik.touched.newPrice && formik.errors.newPrice)
+                    }
                     fullWidth
                     label="New Price"
                     name="newPrice"
@@ -289,25 +246,16 @@ export const ProductCreateForm: FC = (props) => {
         </Card>
         <Card>
           <CardContent>
-            <Grid
-              container
-              spacing={3}
-            >
-              <Grid
-                xs={12}
-                md={4}
-              >
-                <Typography variant="h6">
-                  Category
-                </Typography>
+            <Grid container spacing={3}>
+              <Grid xs={12} md={4}>
+                <Typography variant="h6">Category</Typography>
               </Grid>
-              <Grid
-                xs={12}
-                md={8}
-              >
+              <Grid xs={12} md={8}>
                 <Stack spacing={3}>
                   <TextField
-                    error={!!(formik.touched.category && formik.errors.category)}
+                    error={
+                      !!(formik.touched.category && formik.errors.category)
+                    }
                     fullWidth
                     label="Category"
                     name="category"
@@ -317,10 +265,7 @@ export const ProductCreateForm: FC = (props) => {
                     value={formik.values.category}
                   >
                     {categoryOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                      >
+                      <MenuItem key={option.value} value={option.value}>
                         {option.label}
                       </MenuItem>
                     ))}
@@ -356,13 +301,8 @@ export const ProductCreateForm: FC = (props) => {
           justifyContent="flex-end"
           spacing={1}
         >
-          <Button color="inherit">
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            variant="contained"
-          >
+          <Button color="inherit">Cancel</Button>
+          <Button type="submit" variant="contained">
             Create
           </Button>
         </Stack>

@@ -1,36 +1,33 @@
-import type { FC } from 'react';
-import PropTypes from 'prop-types';
-import Markdown from 'react-markdown';
-import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Unstable_Grid2';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import SvgIcon from '@mui/material/SvgIcon';
-import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
+import Box from "@mui/material/Box";
+import Divider from "@mui/material/Divider";
+import ImageList from "@mui/material/ImageList";
+import ImageListItem from "@mui/material/ImageListItem";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import SvgIcon from "@mui/material/SvgIcon";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Unstable_Grid2";
+import { styled } from "@mui/material/styles";
+import ArrowRightIcon from "@untitled-ui/icons-react/build/esm/ArrowRight";
+import PropTypes from "prop-types";
+import type { FC } from "react";
+import Markdown from "react-markdown";
 
-import { RouterLink } from 'src/components/router-link';
-import { paths } from 'src/paths';
-import type { Company } from 'src/types/job';
+import { RouterLink } from "src/components/router-link";
+import type { Company } from "src/types/job";
 
-import { CompanyJobs } from './company-jobs';
-import { CompanyMember } from './company-member';
+import { CompanyJobs } from "./company-jobs";
+import { CompanyMember } from "./company-member";
 
-const MarkdownWrapper = styled('div')(
-  ({ theme }) => ({
-    color: theme.palette.text.secondary,
-    fontFamily: theme.typography.fontFamily,
-    '& p': {
-      fontSize: theme.typography.body2.fontSize,
-      lineHeight: theme.typography.body1.lineHeight,
-      marginBottom: theme.spacing(2)
-    }
-  })
-);
+const MarkdownWrapper = styled("div")(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  fontFamily: theme.typography.fontFamily,
+  "& p": {
+    fontSize: theme.typography.body2.fontSize,
+    lineHeight: theme.typography.body1.lineHeight,
+    marginBottom: theme.spacing(2),
+  },
+}));
 
 interface CompanyOverviewProps {
   company: Company;
@@ -46,24 +43,14 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
   return (
     <div {...other}>
       <div>
-        <Typography variant="h5">
-          {company.shortDescription}
-        </Typography>
+        <Typography variant="h5">{company.shortDescription}</Typography>
       </div>
       <Box sx={{ mt: 3 }}>
         <MarkdownWrapper>
-          {company.description && (
-            <Markdown>
-              {company.description}
-            </Markdown>
-          )}
+          {company.description && <Markdown>{company.description}</Markdown>}
         </MarkdownWrapper>
       </Box>
-      <ImageList
-        cols={3}
-        gap={24}
-        variant="masonry"
-      >
+      <ImageList cols={3} gap={24} variant="masonry">
         {images.map((image, index) => (
           <ImageListItem key={index}>
             <img
@@ -83,23 +70,18 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
         spacing={3}
         sx={{ mt: 3 }}
       >
-        <Typography variant="h6">
-          Jobs
-        </Typography>
+        <Typography variant="h6">Jobs</Typography>
         <Link
           color="inherit"
           component={RouterLink}
-          href={paths.dashboard.jobs.companies.details}
+          href={"#"}
           variant="subtitle2"
           sx={{
-            alignItems: 'center',
-            display: 'flex'
+            alignItems: "center",
+            display: "flex",
           }}
         >
-          <Typography
-            sx={{ mr: 1 }}
-            variant="subtitle2"
-          >
+          <Typography sx={{ mr: 1 }} variant="subtitle2">
             Jobs
           </Typography>
           <SvgIcon>
@@ -118,23 +100,18 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
         justifyContent="space-between"
         spacing={3}
       >
-        <Typography variant="h6">
-          Members
-        </Typography>
+        <Typography variant="h6">Members</Typography>
         <Link
           color="inherit"
           component={RouterLink}
-          href={paths.dashboard.jobs.companies.details}
+          href={"#"}
           variant="subtitle2"
           sx={{
-            alignItems: 'center',
-            display: 'flex'
+            alignItems: "center",
+            display: "flex",
           }}
         >
-          <Typography
-            sx={{ mr: 1 }}
-            variant="subtitle2"
-          >
+          <Typography sx={{ mr: 1 }} variant="subtitle2">
             Members
           </Typography>
           <SvgIcon>
@@ -146,19 +123,12 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
         sx={{
           mb: -1.5,
           mt: 1.5,
-          mx: -1.5
+          mx: -1.5,
         }}
       >
-        <Grid
-          container
-          spacing={3}
-        >
+        <Grid container spacing={3}>
           {members.map((member) => (
-            <Grid
-              key={member.id}
-              xs={12}
-              sm={6}
-            >
+            <Grid key={member.id} xs={12} sm={6}>
               <CompanyMember member={member} />
             </Grid>
           ))}
@@ -170,5 +140,5 @@ export const CompanyOverview: FC<CompanyOverviewProps> = (props) => {
 
 CompanyOverview.propTypes = {
   // @ts-ignore
-  company: PropTypes.object.isRequired
+  company: PropTypes.object.isRequired,
 };

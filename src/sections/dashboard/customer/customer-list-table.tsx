@@ -1,36 +1,38 @@
-import type { ChangeEvent, FC, MouseEvent } from 'react';
-import numeral from 'numeral';
-import PropTypes from 'prop-types';
-import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
-import Edit02Icon from '@untitled-ui/icons-react/build/esm/Edit02';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import SvgIcon from '@mui/material/SvgIcon';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
+import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import SvgIcon from "@mui/material/SvgIcon";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Typography from "@mui/material/Typography";
+import ArrowRightIcon from "@untitled-ui/icons-react/build/esm/ArrowRight";
+import Edit02Icon from "@untitled-ui/icons-react/build/esm/Edit02";
+import numeral from "numeral";
+import PropTypes from "prop-types";
+import type { ChangeEvent, FC, MouseEvent } from "react";
 
-import { RouterLink } from 'src/components/router-link';
-import { Scrollbar } from 'src/components/scrollbar';
-import { paths } from 'src/paths';
-import type { Customer } from 'src/types/customer';
-import { getInitials } from 'src/utils/get-initials';
+import { RouterLink } from "src/components/router-link";
+import { Scrollbar } from "src/components/scrollbar";
+import type { Customer } from "src/types/customer";
+import { getInitials } from "src/utils/get-initials";
 
 interface CustomerListTableProps {
   count?: number;
   items?: Customer[];
   onDeselectAll?: () => void;
   onDeselectOne?: (customerId: string) => void;
-  onPageChange?: (event: MouseEvent<HTMLButtonElement> | null, newPage: number) => void;
+  onPageChange?: (
+    event: MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => void;
   onRowsPerPageChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   onSelectAll?: () => void;
   onSelectOne?: (customerId: string) => void;
@@ -51,32 +53,31 @@ export const CustomerListTable: FC<CustomerListTableProps> = (props) => {
     onSelectOne,
     page = 0,
     rowsPerPage = 0,
-    selected = []
+    selected = [],
   } = props;
 
-  const selectedSome = (selected.length > 0) && (selected.length < items.length);
-  const selectedAll = (items.length > 0) && (selected.length === items.length);
+  const selectedSome = selected.length > 0 && selected.length < items.length;
+  const selectedAll = items.length > 0 && selected.length === items.length;
   const enableBulkActions = selected.length > 0;
 
   return (
-    <Box sx={{ position: 'relative' }}>
+    <Box sx={{ position: "relative" }}>
       {enableBulkActions && (
         <Stack
           direction="row"
           spacing={2}
           sx={{
-            alignItems: 'center',
-            backgroundColor: (theme) => theme.palette.mode === 'dark'
-              ? 'neutral.800'
-              : 'neutral.50',
-            display: enableBulkActions ? 'flex' : 'none',
-            position: 'absolute',
+            alignItems: "center",
+            backgroundColor: (theme) =>
+              theme.palette.mode === "dark" ? "neutral.800" : "neutral.50",
+            display: enableBulkActions ? "flex" : "none",
+            position: "absolute",
             top: 0,
             left: 0,
-            width: '100%',
+            width: "100%",
             px: 2,
             py: 0.5,
-            zIndex: 10
+            zIndex: 10,
           }}
         >
           <Checkbox
@@ -90,16 +91,10 @@ export const CustomerListTable: FC<CustomerListTableProps> = (props) => {
               }
             }}
           />
-          <Button
-            color="inherit"
-            size="small"
-          >
+          <Button color="inherit" size="small">
             Delete
           </Button>
-          <Button
-            color="inherit"
-            size="small"
-          >
+          <Button color="inherit" size="small">
             Edit
           </Button>
         </Stack>
@@ -121,39 +116,29 @@ export const CustomerListTable: FC<CustomerListTableProps> = (props) => {
                   }}
                 />
               </TableCell>
-              <TableCell>
-                Name
-              </TableCell>
-              <TableCell>
-                Location
-              </TableCell>
-              <TableCell>
-                Orders
-              </TableCell>
-              <TableCell>
-                Spent
-              </TableCell>
-              <TableCell align="right">
-                Actions
-              </TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Location</TableCell>
+              <TableCell>Orders</TableCell>
+              <TableCell>Spent</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {items.map((customer) => {
               const isSelected = selected.includes(customer.id);
               const location = `${customer.city}, ${customer.state}, ${customer.country}`;
-              const totalSpent = numeral(customer.totalSpent).format(`${customer.currency}0,0.00`);
+              const totalSpent = numeral(customer.totalSpent).format(
+                `${customer.currency}0,0.00`
+              );
 
               return (
-                <TableRow
-                  hover
-                  key={customer.id}
-                  selected={isSelected}
-                >
+                <TableRow hover key={customer.id} selected={isSelected}>
                   <TableCell padding="checkbox">
                     <Checkbox
                       checked={isSelected}
-                      onChange={(event: ChangeEvent<HTMLInputElement>): void => {
+                      onChange={(
+                        event: ChangeEvent<HTMLInputElement>
+                      ): void => {
                         if (event.target.checked) {
                           onSelectOne?.(customer.id);
                         } else {
@@ -164,16 +149,12 @@ export const CustomerListTable: FC<CustomerListTableProps> = (props) => {
                     />
                   </TableCell>
                   <TableCell>
-                    <Stack
-                      alignItems="center"
-                      direction="row"
-                      spacing={1}
-                    >
+                    <Stack alignItems="center" direction="row" spacing={1}>
                       <Avatar
                         src={customer.avatar}
                         sx={{
                           height: 42,
-                          width: 42
+                          width: 42,
                         }}
                       >
                         {getInitials(customer.name)}
@@ -182,44 +163,29 @@ export const CustomerListTable: FC<CustomerListTableProps> = (props) => {
                         <Link
                           color="inherit"
                           component={RouterLink}
-                          href={paths.dashboard.customers.details}
+                          href={"#"}
                           variant="subtitle2"
                         >
                           {customer.name}
                         </Link>
-                        <Typography
-                          color="text.secondary"
-                          variant="body2"
-                        >
+                        <Typography color="text.secondary" variant="body2">
                           {customer.email}
                         </Typography>
                       </div>
                     </Stack>
                   </TableCell>
+                  <TableCell>{location}</TableCell>
+                  <TableCell>{customer.totalOrders}</TableCell>
                   <TableCell>
-                    {location}
-                  </TableCell>
-                  <TableCell>
-                    {customer.totalOrders}
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="subtitle2">
-                      {totalSpent}
-                    </Typography>
+                    <Typography variant="subtitle2">{totalSpent}</Typography>
                   </TableCell>
                   <TableCell align="right">
-                    <IconButton
-                      component={RouterLink}
-                      href={paths.dashboard.customers.edit}
-                    >
+                    <IconButton component={RouterLink} href={"#"}>
                       <SvgIcon>
                         <Edit02Icon />
                       </SvgIcon>
                     </IconButton>
-                    <IconButton
-                      component={RouterLink}
-                      href={paths.dashboard.customers.details}
-                    >
+                    <IconButton component={RouterLink} href={"#"}>
                       <SvgIcon>
                         <ArrowRightIcon />
                       </SvgIcon>
@@ -255,5 +221,5 @@ CustomerListTable.propTypes = {
   onSelectOne: PropTypes.func,
   page: PropTypes.number,
   rowsPerPage: PropTypes.number,
-  selected: PropTypes.array
+  selected: PropTypes.array,
 };
