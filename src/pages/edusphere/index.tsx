@@ -11,23 +11,53 @@ import { Seo } from "src/components/seo";
 import { usePageView } from "src/hooks/use-page-view";
 import { useSettings } from "src/hooks/use-settings";
 import { Layout as DashboardLayout } from "src/layouts/dashboard";
-import { OverviewBanner } from "src/sections/dashboard/overview/overview-banner";
-import { OverviewDoneTasks } from "src/sections/dashboard/overview/overview-done-tasks";
+import { CourseCard } from "src/sections/dashboard/academy/course-card";
 import { OverviewEvents } from "src/sections/dashboard/overview/overview-events";
 import { OverviewHelp } from "src/sections/dashboard/overview/overview-help";
 import { OverviewInbox } from "src/sections/dashboard/overview/overview-inbox";
-import { OverviewJobs } from "src/sections/dashboard/overview/overview-jobs";
+import { OverviewOpenTasks } from "src/sections/dashboard/overview/overview-open-tasks";
 import { OverviewOpenTickets } from "src/sections/dashboard/overview/overview-open-tickets";
-import { OverviewPendingIssues } from "src/sections/dashboard/overview/overview-pending-issues";
+import { OverviewPendingMeetings } from "src/sections/dashboard/overview/overview-pending-meetings";
 import { OverviewSubscriptionUsage } from "src/sections/dashboard/overview/overview-subscription-usage";
 import { OverviewTips } from "src/sections/dashboard/overview/overview-tips";
 import { OverviewTransactions } from "src/sections/dashboard/overview/overview-transactions";
+import { OverviewUpdateNotes } from "src/sections/dashboard/overview/overview-update-notes";
+import { Course } from "src/types/academy";
 
 const now = new Date();
 
+const useCourses = (): Course[] => {
+  return [
+    {
+      id: "c3a2b7331eef8329e2a87c79",
+      description: "Einführung in React und Redux",
+      duration: "78 hours",
+      media: "/assets/courses/course-1.png",
+      progress: 23,
+      title: "React and Redux Tutorial",
+    },
+    {
+      id: "3f02f696f869ecd1c68e95a3",
+      description: "Lineare Gleichungen",
+      duration: "14 hours",
+      media: "/assets/courses/course-2.png",
+      progress: 52,
+      title: "Mathematik II",
+    },
+    {
+      id: "f6e76a6474038384cd9e032b",
+      description: "Die perfekte Zubereitung einer Bratwurst",
+      duration: "21 hours",
+      media: "/assets/courses/course-3.png",
+      progress: 90,
+      title: "Die perfekte Grillwurst",
+    },
+  ];
+};
+
 const Page: NextPage = () => {
   const settings = useSettings();
-
+  const courses = useCourses();
   usePageView();
 
   return (
@@ -76,41 +106,123 @@ const Page: NextPage = () => {
             <Grid xs={12}>
               <Divider />
             </Grid>
-
-            <Grid xs={12} md={4}>
-              <OverviewDoneTasks amount={31} />
+            <Grid xs={12}>
+              <Typography variant="h5">Neuigkeiten</Typography>
             </Grid>
             <Grid xs={12} md={4}>
-              <OverviewPendingIssues amount={12} />
+              <OverviewOpenTasks amount={31} />
+            </Grid>
+            <Grid xs={12} md={4}>
+              <OverviewPendingMeetings amount={12} />
             </Grid>
             <Grid xs={12} md={4}>
               <OverviewOpenTickets amount={5} />
             </Grid>
 
-            <Grid xs={12} md={7}>
-              <OverviewBanner />
-            </Grid>
             <Grid xs={12} md={5}>
-              <OverviewTips
-                sx={{ height: "100%" }}
-                tips={[
+              <OverviewEvents
+                events={[
                   {
-                    title: "New fresh design.",
-                    content:
-                      "Your favorite template has a new trendy look, more customization options, screens & more.",
+                    id: "3bfa0bc6cbc99bf747c94d51",
+                    createdAt: addDays(now, 1),
+                    description: "17:00 to 18:00",
+                    title: "Abgabe Mathematik",
                   },
                   {
-                    title: "Tip 2.",
-                    content: "Tip content",
+                    id: "dd6c8ce8655ac222b01f24f9",
+                    createdAt: addDays(now, 4),
+                    description: "17:00 to 18:00",
+                    title: "Gruppenarbeit Erdkunde",
                   },
                   {
-                    title: "Tip 3.",
-                    content: "Tip content",
+                    id: "d2a66e24110f52acb0cd0b9f",
+                    createdAt: addDays(now, 7),
+                    description: "17:00 to 18:00",
+                    title: "Gruppenarbeit Erdkunde",
                   },
                 ]}
               />
             </Grid>
+
             <Grid xs={12} md={7}>
+              <OverviewInbox
+                messages={[
+                  {
+                    id: "b91cbe81ee3efefba6b915a7",
+                    content:
+                      "Hey, ich habe eine Frage zur Aufgabe 3. Kannst du mir helfen?",
+                    createdAt: subMinutes(now, 2),
+                    senderAvatar: "/assets/avatars/avatar-alcides-antonio.png",
+                    senderName: "Alicia S.",
+                    senderOnline: true,
+                  },
+                  {
+                    id: "de0eb1ac517aae1aa57c0b7e",
+                    content: "Hey Vivian, wann passt es dir?",
+                    createdAt: subMinutes(now, 56),
+                    senderAvatar: "/assets/avatars/avatar-marcus-finn.png",
+                    senderName: "Marcus F.",
+                    senderOnline: false,
+                  },
+                  {
+                    id: "38e2b0942c90d0ad724e6f40",
+                    content:
+                      "In der Präsentation gibt es noch einen Fehler - kannst du dich darum kümmern?",
+                    createdAt: subHours(subMinutes(now, 23), 3),
+                    senderAvatar: "/assets/avatars/avatar-carson-darrin.png",
+                    senderName: "Carina R.",
+                    senderOnline: true,
+                  },
+                  {
+                    id: "467505f3356f25a69f4c4890",
+                    content:
+                      "Hey, ich warte noch auf dein Feedack. Magst du mal schauen?",
+                    createdAt: subHours(subMinutes(now, 6), 8),
+                    senderAvatar: "/assets/avatars/avatar-fran-perez.png",
+                    senderName: "Frank P.",
+                    senderOnline: true,
+                  },
+                ]}
+              />
+            </Grid>
+
+            <Grid xs={12} md={5}>
+              <OverviewUpdateNotes />
+            </Grid>
+
+            <Grid xs={12} md={7}>
+              <OverviewTips
+                sx={{ height: "100%" }}
+                tips={[
+                  {
+                    title: "Dies ist ein super Tipp!",
+                    content:
+                      "Dies ist der Inhalt eines Tipps. Sie können hier alles schreiben, was Sie möchten. Sie können auch Links und andere Formatierungen hinzufügen.",
+                  },
+                  {
+                    title: "Tipp 2.",
+                    content: "Hier könnte Ihre Werbung stehen.",
+                  },
+                  {
+                    title: "Tipp 3.",
+                    content: "Hier könnte Ihre Werbung stehen.",
+                  },
+                ]}
+              />
+            </Grid>
+
+            <Grid xs={12}>
+              <Typography variant="h5">Meine Kurse</Typography>
+            </Grid>
+            {courses.map((course) => (
+              <Grid key={course.id} xs={12} md={4}>
+                <CourseCard course={course} />
+              </Grid>
+            ))}
+            <Grid xs={12}>
+              <Typography variant="h5">Meine Statistiken</Typography>
+            </Grid>
+            <Grid xs={12} md={12}>
               <OverviewSubscriptionUsage
                 chartSeries={[
                   {
@@ -124,53 +236,8 @@ const Page: NextPage = () => {
                 ]}
               />
             </Grid>
-            <Grid xs={12} md={5}>
-              <OverviewInbox
-                messages={[
-                  {
-                    id: "b91cbe81ee3efefba6b915a7",
-                    content: "Hello, we spoke earlier on the phone",
-                    createdAt: subMinutes(now, 2),
-                    senderAvatar: "/assets/avatars/avatar-alcides-antonio.png",
-                    senderName: "Alcides Antonio",
-                    senderOnline: true,
-                  },
-                  {
-                    id: "de0eb1ac517aae1aa57c0b7e",
-                    content: "Is the job still available?",
-                    createdAt: subMinutes(now, 56),
-                    senderAvatar: "/assets/avatars/avatar-marcus-finn.png",
-                    senderName: "Marcus Finn",
-                    senderOnline: false,
-                  },
-                  {
-                    id: "38e2b0942c90d0ad724e6f40",
-                    content: "What is a screening task? I’d like to",
-                    createdAt: subHours(subMinutes(now, 23), 3),
-                    senderAvatar: "/assets/avatars/avatar-carson-darrin.png",
-                    senderName: "Carson Darrin",
-                    senderOnline: true,
-                  },
-                  {
-                    id: "467505f3356f25a69f4c4890",
-                    content: "Still waiting for feedback",
-                    createdAt: subHours(subMinutes(now, 6), 8),
-                    senderAvatar: "/assets/avatars/avatar-fran-perez.png",
-                    senderName: "Fran Perez",
-                    senderOnline: true,
-                  },
-                  {
-                    id: "7e6af808e801a8361ce4cf8b",
-                    content: "Need more information about campaigns",
-                    createdAt: subHours(subMinutes(now, 18), 10),
-                    senderAvatar: "/assets/avatars/avatar-jie-yan-song.png",
-                    senderName: "Jie Yan Song",
-                    senderOnline: false,
-                  },
-                ]}
-              />
-            </Grid>
-            <Grid xs={12} md={7}>
+
+            <Grid xs={12} md={6}>
               <OverviewTransactions
                 transactions={[
                   {
@@ -212,39 +279,7 @@ const Page: NextPage = () => {
                 ]}
               />
             </Grid>
-            <Grid xs={12} md={5}>
-              <OverviewEvents
-                events={[
-                  {
-                    id: "3bfa0bc6cbc99bf747c94d51",
-                    createdAt: addDays(now, 1),
-                    description: "17:00 to 18:00",
-                    title: "Meeting with Partners",
-                  },
-                  {
-                    id: "dd6c8ce8655ac222b01f24f9",
-                    createdAt: addDays(now, 4),
-                    description: "17:00 to 18:00",
-                    title: "Weekly Meeting",
-                  },
-                  {
-                    id: "f274902e2bf226865b3cf947",
-                    createdAt: addDays(now, 4),
-                    description: "17:00 to 18:00",
-                    title: "Weekly Meeting",
-                  },
-                  {
-                    id: "d2a66e24110f52acb0cd0b9f",
-                    createdAt: addDays(now, 7),
-                    description: "17:00 to 18:00",
-                    title: "Weekly Meeting",
-                  },
-                ]}
-              />
-            </Grid>
-            <Grid xs={6}>
-              <OverviewJobs />
-            </Grid>
+
             <Grid xs={6}>
               <OverviewHelp />
             </Grid>

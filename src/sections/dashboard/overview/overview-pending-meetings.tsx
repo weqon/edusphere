@@ -11,13 +11,16 @@ import PropTypes from "prop-types";
 import type { FC } from "react";
 import { useTranslation } from "react-i18next";
 
-interface OverviewOpenTicketsProps {
+interface OverviewPendingMeetingsProps {
   amount: number;
 }
 
-export const OverviewOpenTickets: FC<OverviewOpenTicketsProps> = (props) => {
+export const OverviewPendingMeetings: FC<OverviewPendingMeetingsProps> = (
+  props
+) => {
   const { amount } = props;
   const { t } = useTranslation();
+
   return (
     <Card>
       <Stack
@@ -33,11 +36,11 @@ export const OverviewOpenTickets: FC<OverviewOpenTicketsProps> = (props) => {
         }}
       >
         <div>
-          <img src="/assets/iconly/iconly-glass-paper.svg" width={48} />
+          <img src="/assets/iconly/iconly-glass-info.svg" width={48} />
         </div>
         <Box sx={{ flexGrow: 1 }}>
           <Typography color="text.secondary" variant="body2">
-            {t("open_tickets")}
+            {t("pending_meetings")}
           </Typography>
           <Typography color="text.primary" variant="h4">
             {amount}
@@ -55,13 +58,13 @@ export const OverviewOpenTickets: FC<OverviewOpenTicketsProps> = (props) => {
           }
           size="small"
         >
-          {t("see_all_tickets")}
+          {t("see_all_meetings")}
         </Button>
       </CardActions>
     </Card>
   );
 };
 
-OverviewOpenTickets.propTypes = {
+OverviewPendingMeetings.propTypes = {
   amount: PropTypes.number.isRequired,
 };

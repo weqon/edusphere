@@ -1,30 +1,31 @@
-import type { FC } from 'react';
-import PropTypes from 'prop-types';
-import { format } from 'date-fns';
-import ArrowRightIcon from '@untitled-ui/icons-react/build/esm/ArrowRight';
-import CalendarIcon from '@untitled-ui/icons-react/build/esm/Calendar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
-import ListItemText from '@mui/material/ListItemText';
-import SvgIcon from '@mui/material/SvgIcon';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from "@mui/material/CardHeader";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import ListItemSecondaryAction from "@mui/material/ListItemSecondaryAction";
+import ListItemText from "@mui/material/ListItemText";
+import SvgIcon from "@mui/material/SvgIcon";
+import Typography from "@mui/material/Typography";
+import ArrowRightIcon from "@untitled-ui/icons-react/build/esm/ArrowRight";
+import CalendarIcon from "@untitled-ui/icons-react/build/esm/Calendar";
+import { format } from "date-fns";
+import PropTypes from "prop-types";
+import type { FC } from "react";
+import { useTranslation } from "react-i18next";
 
 type Event = {
   id: string;
   createdAt: Date;
   description: string;
   title: string;
-}
+};
 
 interface OverviewEventsProps {
   events: Event[];
@@ -32,34 +33,28 @@ interface OverviewEventsProps {
 
 export const OverviewEvents: FC<OverviewEventsProps> = (props) => {
   const { events } = props;
-
+  const { t } = useTranslation();
   return (
     <Card>
-      <CardHeader
-        title="Upcoming events"
-        subheader="Based on the linked bank accounts"
-      />
+      <CardHeader title={t("upcoming_events")} />
       <CardContent sx={{ pt: 0 }}>
         <List disablePadding>
           {events.map((event) => {
-            const createdAtMonth = format(event.createdAt, 'LLL').toUpperCase();
-            const createdAtDay = format(event.createdAt, 'd');
+            const createdAtMonth = format(event.createdAt, "LLL").toUpperCase();
+            const createdAtDay = format(event.createdAt, "d");
 
             return (
-              <ListItem
-                disableGutters
-                sx={{ py: 1.5 }}
-                key={event.id}
-              >
+              <ListItem disableGutters sx={{ py: 1.5 }} key={event.id}>
                 <ListItemAvatar>
                   <Box
                     sx={{
                       p: 1,
-                      backgroundColor: (theme) => theme.palette.mode === 'dark'
-                        ? 'neutral.800'
-                        : 'neutral.100',
+                      backgroundColor: (theme) =>
+                        theme.palette.mode === "dark"
+                          ? "neutral.800"
+                          : "neutral.100",
                       borderRadius: 2,
-                      maxWidth: 'fit-content'
+                      maxWidth: "fit-content",
                     }}
                   >
                     <Typography
@@ -79,13 +74,8 @@ export const OverviewEvents: FC<OverviewEventsProps> = (props) => {
                   </Box>
                 </ListItemAvatar>
                 <ListItemText>
-                  <Typography variant="subtitle2">
-                    {event.title}
-                  </Typography>
-                  <Typography
-                    color="text.secondary"
-                    variant="body2"
-                  >
+                  <Typography variant="subtitle2">{event.title}</Typography>
+                  <Typography color="text.secondary" variant="body2">
                     {event.description}
                   </Typography>
                 </ListItemText>
@@ -105,14 +95,14 @@ export const OverviewEvents: FC<OverviewEventsProps> = (props) => {
       <CardActions>
         <Button
           color="inherit"
-          endIcon={(
+          endIcon={
             <SvgIcon>
               <ArrowRightIcon />
             </SvgIcon>
-          )}
+          }
           size="small"
         >
-          See all
+          {t("see_all_events")}
         </Button>
       </CardActions>
     </Card>
@@ -120,5 +110,5 @@ export const OverviewEvents: FC<OverviewEventsProps> = (props) => {
 };
 
 OverviewEvents.propTypes = {
-  events: PropTypes.array.isRequired
+  events: PropTypes.array.isRequired,
 };
