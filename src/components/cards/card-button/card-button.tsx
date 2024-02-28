@@ -9,6 +9,7 @@ interface Props {
   subtitle: string;
   notice?: string;
   href: string;
+  target?: string;
 }
 
 export const CardButton: FC<Props> = ({
@@ -17,6 +18,7 @@ export const CardButton: FC<Props> = ({
   subtitle,
   notice,
   href,
+  target,
 }) => {
   const router = useRouter();
   return (
@@ -33,7 +35,14 @@ export const CardButton: FC<Props> = ({
           bgcolor: "primary.light",
         },
       }}
-      onClick={() => router.push(href)}
+      onClick={() => {
+        if (target === "_blank") {
+          window.open(href, "_blank");
+          return;
+        }
+
+        router.push(href);
+      }}
     >
       <CardMedia
         component="img"

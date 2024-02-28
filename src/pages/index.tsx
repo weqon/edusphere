@@ -46,7 +46,8 @@ const Page: NextPage = () => {
                   imgSrc="/assets/bbb-logo.svg"
                   title="Sprechen"
                   subtitle="Meetingraum betreten"
-                  href={paths.dashboard.index}
+                  href={"https://meet.weqon.net/signin"}
+                  target={"_blank"}
                 />
               </Grid>
               <Grid item xs={6} md={4}>
@@ -56,6 +57,15 @@ const Page: NextPage = () => {
                   subtitle="Chatraum betreten"
                   notice="4 Neue Nachrichten"
                   href={paths.dashboard.index}
+                />
+              </Grid>
+              <Grid item xs={6} md={4}>
+                <CardButton
+                  imgSrc="/assets/nextcloud-logo.png"
+                  title="Dokumente"
+                  subtitle="Nextcloud öffnen"
+                  href={"https://cloud.weqon.net/"}
+                  target={"_blank"}
                 />
               </Grid>
             </Grid>
