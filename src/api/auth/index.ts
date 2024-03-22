@@ -1,11 +1,13 @@
-import type { User } from 'src/types/user';
-import { createResourceId } from 'src/utils/create-resource-id';
-import { decode, JWT_EXPIRES_IN, JWT_SECRET, sign } from 'src/utils/jwt';
-import { wait } from 'src/utils/wait';
+import type { User } from "src/types/user";
+import { createResourceId } from "src/utils/create-resource-id";
+import { JWT_EXPIRES_IN, JWT_SECRET, sign } from "src/utils/jwt";
+import { wait } from "src/utils/wait";
 
-import { users } from './data';
+import axios from "axios";
+import { API_ROUTES } from "../api-routes";
+import { users } from "./data";
 
-const STORAGE_KEY = 'users';
+const STORAGE_KEY = "users";
 
 // NOTE: We use sessionStorage since memory storage is lost after page reload.
 //  This should be replaced with a server call that returns DB persisted data.
@@ -38,7 +40,7 @@ const persistUser = (user: User): void => {
 type SignInRequest = {
   email: string;
   password: string;
-}
+};
 
 type SignInResponse = Promise<{
   accessToken: string;
@@ -48,14 +50,14 @@ type SignUpRequest = {
   email: string;
   name: string;
   password: string;
-}
+};
 
 type SignUpResponse = Promise<{
   accessToken: string;
 }>;
 
 type MeRequest = {
-  accessToken: string
+  accessToken: string;
 };
 
 type MeResponse = Promise<User>;
@@ -64,35 +66,29 @@ class AuthApi {
   async signIn(request: SignInRequest): SignInResponse {
     const { email, password } = request;
 
-    await wait(500);
-
     return new Promise((resolve, reject) => {
       try {
-        // Merge static users (data file) with persisted users (browser storage)
-        const mergedUsers = [
-          ...users,
-          ...getPersistedUsers()
-        ];
-
-        // Find the user
-        const user = mergedUsers.find((user) => user.email === email);
-
-        if (!user || (user.password !== password)) {
-          reject(new Error('Please check your email and password'));
-          return;
-        }
-
-        // Create the access token
-        const accessToken = sign(
-          { userId: user.id },
-          JWT_SECRET,
-          { expiresIn: JWT_EXPIRES_IN }
-        );
-
-        resolve({ accessToken });
+        // call login route
+        axios
+          .post(
+            process.env.NEXT_PUBLIC_API_HOST + API_ROUTES.LOGIN,
+            { username: email, password },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((response) => {
+            resolve({ accessToken: response.data.token });
+          })
+          .catch((err) => {
+            console.error(err);
+            reject(new Error("Invalid email or password"));
+          });
       } catch (err) {
-        console.error('[Auth Api]: ', err);
-        reject(new Error('Internal server error'));
+        console.error("[Auth Api]: ", err);
+        reject(new Error("Internal server error"));
       }
     });
   }
@@ -105,16 +101,13 @@ class AuthApi {
     return new Promise((resolve, reject) => {
       try {
         // Merge static users (data file) with persisted users (browser storage)
-        const mergedUsers = [
-          ...users,
-          ...getPersistedUsers()
-        ];
+        const mergedUsers = [...users, ...getPersistedUsers()];
 
         // Check if a user already exists
         let user = mergedUsers.find((user) => user.email === email);
 
         if (user) {
-          reject(new Error('User already exists'));
+          reject(new Error("User already exists"));
           return;
         }
 
@@ -124,21 +117,19 @@ class AuthApi {
           email,
           name,
           password,
-          plan: 'Standard'
+          plan: "Standard",
         };
 
         persistUser(user);
 
-        const accessToken = sign(
-          { userId: user.id },
-          JWT_SECRET,
-          { expiresIn: JWT_EXPIRES_IN }
-        );
+        const accessToken = sign({ userId: user.id }, JWT_SECRET, {
+          expiresIn: JWT_EXPIRES_IN,
+        });
 
         resolve({ accessToken });
       } catch (err) {
-        console.error('[Auth Api]: ', err);
-        reject(new Error('Internal server error'));
+        console.error("[Auth Api]: ", err);
+        reject(new Error("Internal server error"));
       }
     });
   }
@@ -148,34 +139,55 @@ class AuthApi {
 
     return new Promise((resolve, reject) => {
       try {
-        // Decode access token
-        const decodedToken = decode(accessToken) as any;
-
-        // Merge static users (data file) with persisted users (browser storage)
-        const mergedUsers = [
-          ...users,
-          ...getPersistedUsers()
-        ];
-
-        // Find the user
-        const { userId } = decodedToken;
-        const user = mergedUsers.find((user) => user.id === userId);
-
-        if (!user) {
-          reject(new Error('Invalid authorization token'));
-          return;
-        }
-
-        resolve({
-          id: user.id,
-          avatar: user.avatar,
-          email: user.email,
-          name: user.name,
-          plan: user.plan
-        });
+        const user = axios
+          .get(process.env.NEXT_PUBLIC_API_HOST + API_ROUTES.ME, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
+          .then((response) => {
+            resolve({
+              id: response?.data?.id,
+              avatar: null,
+              email: response?.data?.email,
+              name: response?.data?.name,
+              plan: "Standard",
+            });
+            resolve(response.data);
+          })
+          .catch((err) => {
+            console.error(err);
+            reject(new Error("Invalid authorization token"));
+          });
       } catch (err) {
-        console.error('[Auth Api]: ', err);
-        reject(new Error('Internal server error'));
+        console.error("[Auth Api]: ", err);
+        reject(new Error("Internal server error"));
+      }
+    });
+  }
+
+  signOut(request: MeRequest): Promise<boolean> {
+    const { accessToken } = request;
+    return new Promise((resolve, reject) => {
+      try {
+        axios
+          .post(process.env.NEXT_PUBLIC_API_HOST + API_ROUTES.LOGOUT, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
+          .then((response) => {
+            resolve(true);
+          })
+          .catch((err) => {
+            console.error(err);
+            reject(new Error("Invalid authorization token"));
+          });
+      } catch (err) {
+        console.error("[Auth Api]: ", err);
+        reject(new Error("Internal server error"));
       }
     });
   }

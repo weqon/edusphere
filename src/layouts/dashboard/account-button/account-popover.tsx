@@ -87,7 +87,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
       <Box sx={{ p: 2 }}>
         <Typography variant="body1">{user.name}</Typography>
         <Typography color="text.secondary" variant="body2">
-          demo@weqon.net
+          {user.email}
         </Typography>
       </Box>
       <Divider />

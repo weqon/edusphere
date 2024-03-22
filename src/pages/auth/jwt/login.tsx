@@ -26,22 +26,19 @@ import { paths } from "src/paths";
 import { Issuer } from "src/utils/auth";
 
 interface Values {
-  email: string;
+  username: string;
   password: string;
   submit: null;
 }
 
 const initialValues: Values = {
-  email: "demo@weqon.net",
-  password: "Password123!",
+  username: "wurst",
+  password: "wurst",
   submit: null,
 };
 
 const validationSchema = Yup.object({
-  email: Yup.string()
-    .email("Must be a valid email")
-    .max(255)
-    .required("Email is required"),
+  username: Yup.string().max(255).required("Email is required"),
   password: Yup.string().max(255).required("Password is required"),
 });
 
@@ -56,7 +53,7 @@ const Page: NextPage = () => {
     validationSchema,
     onSubmit: async (values, helpers): Promise<void> => {
       try {
-        await signIn(values.email, values.password);
+        await signIn(values.username, values.password);
 
         if (isMounted()) {
           router.push(returnTo || paths.dashboard.index);
@@ -102,15 +99,15 @@ const Page: NextPage = () => {
               <Stack spacing={3}>
                 <TextField
                   autoFocus
-                  error={!!(formik.touched.email && formik.errors.email)}
+                  error={!!(formik.touched.username && formik.errors.username)}
                   fullWidth
-                  helperText={formik.touched.email && formik.errors.email}
-                  label="Email"
-                  name="email"
+                  helperText={formik.touched.username && formik.errors.username}
+                  label="Username"
+                  name="username"
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
-                  type="email"
-                  value={formik.values.email}
+                  type="text"
+                  value={formik.values.username}
                 />
                 <TextField
                   error={!!(formik.touched.password && formik.errors.password)}

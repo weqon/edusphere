@@ -1,12 +1,8 @@
 import type { User } from "src/types/user";
+import { useAuth } from "./use-auth";
 
 export const useMockedUser = (): User => {
   // To get the user from the authContext, you can use
-  // `const { user } = useAuth();`
-  return {
-    id: "5e86809283e28b96d2d38537",
-    avatar: "/assets/avatars/avatar-anika-visser.png",
-    name: "Viviak Kaiser",
-    email: "kaiser@weqon.net",
-  };
+  const { user } = useAuth();
+  if (user) return user;
 };

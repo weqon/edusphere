@@ -1,21 +1,21 @@
-import type { FC, ReactNode } from 'react';
-import { useCallback, useEffect, useReducer } from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import type { FC, ReactNode } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 
-import { authApi } from 'src/api/auth';
-import type { User } from 'src/types/user';
-import { Issuer } from 'src/utils/auth';
+import { authApi } from "src/api/auth";
+import type { User } from "src/types/user";
+import { Issuer } from "src/utils/auth";
 
-import type { State } from './auth-context';
-import { AuthContext, initialState } from './auth-context';
+import type { State } from "./auth-context";
+import { AuthContext, initialState } from "./auth-context";
 
-const STORAGE_KEY = 'accessToken';
+const STORAGE_KEY = "accessToken";
 
 enum ActionType {
-  INITIALIZE = 'INITIALIZE',
-  SIGN_IN = 'SIGN_IN',
-  SIGN_UP = 'SIGN_UP',
-  SIGN_OUT = 'SIGN_OUT'
+  INITIALIZE = "INITIALIZE",
+  SIGN_IN = "SIGN_IN",
+  SIGN_UP = "SIGN_UP",
+  SIGN_OUT = "SIGN_OUT",
 }
 
 type InitializeAction = {
@@ -44,11 +44,7 @@ type SignOutAction = {
   type: ActionType.SIGN_OUT;
 };
 
-type Action =
-  | InitializeAction
-  | SignInAction
-  | SignUpAction
-  | SignOutAction;
+type Action = InitializeAction | SignInAction | SignUpAction | SignOutAction;
 
 type Handler = (state: State, action: any) => State;
 
@@ -60,7 +56,7 @@ const handlers: Record<ActionType, Handler> = {
       ...state,
       isAuthenticated,
       isInitialized: true,
-      user
+      user,
     };
   },
   SIGN_IN: (state: State, action: SignInAction): State => {
@@ -69,7 +65,7 @@ const handlers: Record<ActionType, Handler> = {
     return {
       ...state,
       isAuthenticated: true,
-      user
+      user,
     };
   },
   SIGN_UP: (state: State, action: SignUpAction): State => {
@@ -78,19 +74,18 @@ const handlers: Record<ActionType, Handler> = {
     return {
       ...state,
       isAuthenticated: true,
-      user
+      user,
     };
   },
   SIGN_OUT: (state: State): State => ({
     ...state,
     isAuthenticated: false,
-    user: null
-  })
+    user: null,
+  }),
 };
 
-const reducer = (state: State, action: Action): State => (
-  handlers[action.type] ? handlers[action.type](state, action) : state
-);
+const reducer = (state: State, action: Action): State =>
+  handlers[action.type] ? handlers[action.type](state, action) : state;
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -100,43 +95,40 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const initialize = useCallback(
-    async (): Promise<void> => {
-      try {
-        const accessToken = window.sessionStorage.getItem(STORAGE_KEY);
+  const initialize = useCallback(async (): Promise<void> => {
+    try {
+      const accessToken = window.sessionStorage.getItem(STORAGE_KEY);
 
-        if (accessToken) {
-          const user = await authApi.me({ accessToken });
+      if (accessToken) {
+        const user = await authApi.me({ accessToken });
 
-          dispatch({
-            type: ActionType.INITIALIZE,
-            payload: {
-              isAuthenticated: true,
-              user
-            }
-          });
-        } else {
-          dispatch({
-            type: ActionType.INITIALIZE,
-            payload: {
-              isAuthenticated: false,
-              user: null
-            }
-          });
-        }
-      } catch (err) {
-        console.error(err);
+        dispatch({
+          type: ActionType.INITIALIZE,
+          payload: {
+            isAuthenticated: true,
+            user,
+          },
+        });
+      } else {
         dispatch({
           type: ActionType.INITIALIZE,
           payload: {
             isAuthenticated: false,
-            user: null
-          }
+            user: null,
+          },
         });
       }
-    },
-    [dispatch]
-  );
+    } catch (err) {
+      console.error(err);
+      dispatch({
+        type: ActionType.INITIALIZE,
+        payload: {
+          isAuthenticated: false,
+          user: null,
+        },
+      });
+    }
+  }, [dispatch]);
 
   useEffect(
     () => {
@@ -156,8 +148,8 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       dispatch({
         type: ActionType.SIGN_IN,
         payload: {
-          user
-        }
+          user,
+        },
       });
     },
     [dispatch]
@@ -173,20 +165,20 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       dispatch({
         type: ActionType.SIGN_UP,
         payload: {
-          user
-        }
+          user,
+        },
       });
     },
     [dispatch]
   );
 
-  const signOut = useCallback(
-    async (): Promise<void> => {
-      sessionStorage.removeItem(STORAGE_KEY);
-      dispatch({ type: ActionType.SIGN_OUT });
-    },
-    [dispatch]
-  );
+  const signOut = useCallback(async (): Promise<void> => {
+    await authApi.signOut({
+      accessToken: sessionStorage.getItem(STORAGE_KEY) ?? "",
+    });
+    sessionStorage.removeItem(STORAGE_KEY);
+    dispatch({ type: ActionType.SIGN_OUT });
+  }, [dispatch]);
 
   return (
     <AuthContext.Provider
@@ -195,7 +187,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         issuer: Issuer.JWT,
         signIn,
         signUp,
-        signOut
+        signOut,
       }}
     >
       {children}
@@ -204,5 +196,5 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
 };
 
 AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
